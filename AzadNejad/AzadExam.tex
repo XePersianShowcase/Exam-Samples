@@ -1,0 +1,316 @@
+\documentclass[12pt,svgnames,a4paper]{book}%محمد علی آزادنژاد
+\usepackage[right=.5cm,left=.5cm,top=1.7cm,bottom=.5cm,twoside]{geometry}\include{AzadExamCom}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\AzadExamInformation}{
+نام و نام خانوادگی: & باسمه تعالی ‎& تاریخ آزمون: $ 3 $ خرداد $ 1397 $ ‎\\‎
+نام پدر: & اداره کل آموزش و پرورش استان یزد & آزمونِ نوبت دوم  ‎\\‎
+نام دبیر: آزادنژاد & مدیریت آموزش و پرورش اردکان & تعداد $ ‎\total{numSoal}‎ $ سؤال در $ ‎\pageref{LastPage}‎ $ صفحه ‎\\ ‎
+پایه‌ی تحصیلی: هشتم & دبیرستان دوره اول نمونه‌ی سعدی & درس ریاضی ‎\\‎
+شماره‌ی کلاس: &‎‎‎\tikz[baseline=0mm]\node{‎\resizebox{!}{6.5mm}{‎\includegraphics{example-image.jpg}}‎‎‎};‎‎ ‎‎ & مدت برگزاری: $ 90 $ دقیقه ‎\vspace*{-1mm}‎‎
+}\AzadExamHeader
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}\ANomre \StartAzadExam \soal{
+هر یک از جملات زیر را با عدد یا کلمه‌ی مناسب کامل کنید.
+\begin{ItemURSB}{0}{0}{3}{2} \mitema{
+فاصله‌ی نقطه‌ی $ ‎(2,-1)‎ $ از خط $ y=x+3 $ برابر ............... است.
+}\mitemaa{
+با افزایش $ x $،  تابع $ y=0.5^{x}‎ $ ........... می‌یابد.
+}{
+برد $ y=‎\sqrt{3}‎\sin x+‎\cos x‎ $ برابر ......... است.
+}\end{ItemURSB}}{1.5}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\soal{
+در هر مورد بهترین گزینه را انتخاب کنید.
+\begin{ItemURSB}{0}{0}{6}{3} \renewcommand{\AGozineVsep}{\\[-1mm]}\mitema{
+مجموع زاویای داخلی یک چند‌ضلعی، $ 4 $ برابر مجموع زوایای خارجی آن است، آن شکل چند ضلع دارد؟
+\begin{a1}{$ 8 $}{$ 10 $}{$ 12 $}{$ 14 $}\end{a1}}\mitema{
+فاصله‌ی یک خط تا مرکز دایره‌ای $ 5 $ سانتی‌متر است. اگر شعاع دایره $ 6 $ سانتی‌متر باشد، خط و دایره نسبت به هم چه وضعیتی دارند؟
+\begin{a4}[-1mm]{
+خط و دایره یک نقطه‌ی مشترک دارند.
+}{
+خط و دایره نقطه‌‌ی مشترک ندارند.
+}{
+خط از مرکز دایره می‌گذرد.
+}{
+خط و دایره دو نقطه‌ی مشترک دارند.
+}\end{a4}}\mitema{\begin{TpicTest}{\FontItem
+اگر نقطه‌ی $ O $ وسط ضلع $ AB $ باشد، حالت تساوی دو مثلث چیست؟
+\begin{a2}[-1mm]{(وز)}{(وض)}{(ض‌ز‌ض)}{هر سه گزینه}\end{a2}
+}{\begin{tikzpicture}[scale=1.2,label style/.append style={font=\footnotesize}]
+\tkzDefPoints{0/0/O, -1.5/0/A, 1.5/0/B, -1.5/1/A', 1.5/1/B'} 
+\tkzDrawPolygon(O,A,A')\tkzDrawPolygon(O,B,B')
+\tkzLabelPoints[right](B) \tkzLabelPoints[left](A) \tkzLabelPoints[below](O) 
+\tkzMarkSegments[mark=||,size=3pt](A',O B',O)
+\tkzMarkRightAngles[size=0.15](B,A,A' A,B,B')
+\end{tikzpicture}}\end{TpicTest}}\end{ItemURSB}}{1.5}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\soal{\begin{ItemURSB}{-8}{-3}{20}{9}\yek\mitema{\begin{TpicTest}[0.3]{
+دو خط $ d_{1}‎ $ و $ d_{2}‎ $ با هم موازی‌اند. و خط $ d_{3}‎ $ مورب می‌باشد. مقدار $ x $ را پیدا کنید.
+}{\vspace*{-5mm}\begin{tikzpicture}[scale=.6,label style/.append style={font=\small}]
+\tkzDefPoints{0/0/O,-4/1/d,3/1/c,-4/-1/d',3/-1/c'}\tkzDefPoint(60:3){A}\tkzDefPoint(-120:2.6){A'}
+\tkzInterLL(O,A)(c,d) \tkzGetPoint{I}\tkzInterLL(O,A')(c',d') \tkzGetPoint{I'}
+\tkzDrawSegments[AAMidArrow=.2](d,c d',c')
+\tkzDrawSegments(A,A')
+\tkzMarkAngles[size=0.5,fill=red!20](A,I,d)
+\tkzLabelAngle[pos=0.85,rotate=30](A,I,d){\small $ 3x+90 $} 
+\tkzMarkAngles[size=0.5,fill=red!20](c',I',O)
+\tkzLabelPoint[above right=0mm and 2mm](I'){$ 60 $}
+\end{tikzpicture}}\end{TpicTest}}\mitema{\begin{TpicTest}{
+با توجه به شکل، اندازه‌‌‌ی زاویه‌های خواسته شده را به دست آورید.
+}{\begin{tikzpicture}[scale=1.1]
+	\tkzInit[xmin=-2,ymin=-1,xmax=1.5,ymax=1] \tkzClip
+	\tkzDefPoints{-1.4/0/D,1.4/0/B}
+	\tkzDefTriangle[two angles=30 and 30](D,B)\tkzGetPoint{A}
+	\tkzDefTriangle[two angles=30 and 30](B,D)\tkzGetPoint{C}	
+	\tkzDrawPolygon(A,B,C,D)\tkzMarkSegments[mark=||](A,B B,C C,D D,A)
+	\tkzDefBarycentricPoint(D=4,A=-1.1)\tkzGetPoint{D'}	\tkzDrawSegments[->](D,D')
+	\tkzMarkAngles[size=.2](A,B,C)\tkzLabelAngle[pos=-.35](A,B,C){\footnotesize $ 60^{\circ} $}
+	\tkzMarkAngles[size=.2](B,C,D)\tkzLabelAngle[pos=.3](B,C,D){\scriptsize  $ \pmb{?} $}
+	\tkzMarkAngles[size=.2](D',D,C)\tkzLabelAngle[pos=.4](D',D,C){\scriptsize  $ \pmb{?} $}
+\end{tikzpicture}}\end{TpicTest}}\end{ItemURSB}}{\\[-7mm]0.5\\[15mm]0.5}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\soal{
+در هر یک از شکل‌های زیر، نقطه‌ی $ O $ مرکز دایره است. مقادیر مجهول در هر شکل را پیدا کنید.
+\begin{ItemURSB}{0}{-5}{0}{0}
+\mitemxxxx{
+\begin{tikzpicture}[scale=1.5,baseline=10mm,label style/.append style={font=\footnotesize}]
+\tkzDefPoint[](-40:1){A}
+\tkzDefPoint[](-140:1){B}
+\tkzDefPoint[](90:1){N}
+\tkzDefPoint[label=180:$ O $](0:0){O}
+\tkzLabelPoint[below,color=red](-90:1){$ 8\!0^{\circ} $}
+\tkzMarkAngles[size=0.15](B,O,A)
+\tkzLabelAngle[color=blue,pos=.25](B,O,A){\small $  x^{\circ} $}
+\tkzMarkAngles[size=0.2](B,N,A)
+\tkzLabelAngle[color=blue,pos=.4](B,N,A){\small $  y^{\circ} $}
+\tkzDrawCircle(O,A)
+\tkzDrawSegments[](N,A A,O B,O B,N)
+\tkzDrawArc[rotate,color=red,ultra thick](O,B)(100)
+\end{tikzpicture}
+}{
+\begin{tikzpicture}[scale=1.5,baseline=10mm,label style/.append style={font=\footnotesize}]
+\tkzDefPoint[label=90:$ O $](0,0){O}
+\tkzDefPoint[label=0:$ A $](1,0){A}
+\tkzLabelPoint[above=0mm,color=red](135:1){$ B $}
+\tkzDefPoint(1,-2){A'}\tkzDefPoint(-60:1){B'}
+\tkzInterLL(A,A')(O,B') \tkzGetPoint{B}
+\tkzInterLC(O,B)(O,A) \tkzGetPoints{C'}{C}
+\tkzLabelPoints[below left=1mm and -2mm](C) 
+\tkzMarkAngles[size=0.25](B,O,A)
+\tkzLabelAngle[color=blue,pos=.4](B,O,A){\small $  x^{\circ} $}
+\tkzMarkAngles[size=0.35](A,B,O)
+\tkzLabelAngle[color=blue,pos=.5](A,B,O){\small $  y^{\circ} $}
+\tkzMarkRightAngles[size=.1](O,A,B)
+\tkzDrawCircle(O,A)
+\tkzDrawPoints(A,B,O)
+\tkzDrawSegments[](O,A A,B B,O)
+\tkzDrawArc[rotate,color=red,ultra thick](O,A)(300)
+\draw (-.2,-1.7) node[align=center]{\small$ \arc{ABC}=300^{\circ} $};
+\end{tikzpicture}
+}{
+\begin{tikzpicture}[scale=1.5,baseline=10mm,label style/.append style={font=\footnotesize}]
+\tkzDefPoint[](-40:1){A}
+\tkzDefPoint[](-140:1){B}
+\tkzDefPoint(90:1){N}
+\tkzDefPoint(20:1){N'}
+\tkzDefPoint(160:1){N''}
+\tkzMarkAngles[size=0.25](B,N,A)
+\tkzLabelAngle[pos=.55](B,N,A){\small $  50^{\circ} $}
+\tkzMarkAngles[size=0.25](B,N',A)
+\tkzLabelAngle[color=blue,pos=.4](B,N',A){\small $  x^{\circ} $}
+\tkzMarkAngles[size=0.25](B,N'',A)
+\tkzLabelAngle[color=blue,pos=.4](B,N'',A){\small $  y^{\circ} $}
+\tkzDrawCircle(O,A)
+\tkzDrawPoints(A,B,N,N)
+\tkzDrawSegments[](N',B N,A B,N N',A N'',A N'',B)
+\end{tikzpicture}
+}{
+\begin{tikzpicture}[scale=1.5,baseline=10mm,label style/.append style={font=\footnotesize}]
+\tkzDefPoint(0:1){A}
+\tkzDefPoint(60:1){B}
+\tkzDefPoint(120:1){C}
+\tkzDefPoint(180:1){D}
+\tkzDefPoint(240:1){E}
+\tkzDefPoint(300:1){F}
+\tkzDefPoint(0:0){O}
+\tkzMarkAngles[draw=blue,size=0.35](E,A,F)
+\tkzLabelAngle[color=blue,pos=.5](E,A,F){\small $  x^{\circ} $}
+\tkzMarkAngles[draw=blue,size=0.2](A,E,D)
+\tkzLabelAngle[color=blue,pos=.35](A,E,D){\small $  y^{\circ} $}
+\tkzDrawCircle(O,A)
+\tkzDrawPoints(A,B,C,D,E,F,O)
+\tkzDrawSegments[](A,B B,C C,D D,E E,F F,A A,E)
+\draw (0,-1.7) node[text width=4cm,align=center]{\rl{\yek\small
+دایره، به شش کمان مساوی تقسیم شده است.
+}};\end{tikzpicture}}\end{ItemURSB}}{2}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\soal{
+تابع بودن یا نبودن هر یک از روابط زیر را تعیین کنید.
+\begin{center}\begin{tabularx}{\soaltextwidth}{ZZZ}
+\begin{tikzpicture}[baseline=0mm,yscale=.8,label style/.append style={font=\footnotesize}]
+\draw[fill=\figcolor] (-1,0) ellipse (6mm and 18mm);
+\draw[fill=\figcolor]  (1,0) ellipse (6mm and 18mm);
+{\footnotesize \node[below] at (-1,-1.8){$ A $};
+\node[below] at (1,-1.8){$ B $};
+\node (a) at(-1,1) {$ a $};
+\node (b) at(-1,0) {$ b $};
+\node (c) at(-1,-1) {$ c $};
+\node (1) at(1,1.5) {$ 1 $};
+\node (2) at(1,0.75) {$ 2 $};
+\node (3) at(1,0) {$ 3 $};
+\node (4) at(1,-.75) {$ 4 $};
+\node (5) at(1,-1.5) {$ 5 $};}
+\tkzDrawVectors[](a,1 b,3 c,5 c,4)
+\end{tikzpicture}&
+%\begin{tikzpicture}[baseline=4mm,scale=.9,label style/.append style={font=\footnotesize}]
+%\tkzInit[xmin=-1.7,xmax=1.5,ymin=-1.2,ymax=1.2] \tkzDrawXY[noticks]
+%\tkzDefPoints{0/.5/A, .5/-.5/B, 1/.5/C,1.5/-.5/D,-.5/-.5/B', -1/.5/C',-1.5/-.5/D'}
+%\tkzDrawPoints[fill=black,size=12](A,B,C,B',C')
+%\end{tikzpicture}\\[4mm]
+\begin{tikzpicture}[baseline=4mm,scale=.9,label style/.append style={font=\footnotesize}]
+\tkzInit[xmin=-1.5,xmax=1.2,ymin=-1.5,ymax=1.2] \tkzDrawXY[noticks]
+\draw[domain=0:6.28,samples=200,smooth,variable=\t]plot ({.05*16*(sin(\t r))^3},{.05*(13*cos(\t r)-5*cos(2*\t r)-2*cos(3*\t r)-cos(4*\t r))});
+\end{tikzpicture}&
+\begin{tikzpicture}[baseline=4mm,scale=.9,label style/.append style={font=\footnotesize}]
+\node {\small $ \{(-1,4),(-1,0),(-1,-4)\} $};
+\end{tikzpicture}\end{tabularx}\end{center}}{0.75}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\soal{
+در هر مورد با توجه به نمودار تابع، ضابطه‌ی آن را کامل کنید.
+\begin{center}\begin{tabularx}{\soaltextwidth}{ZZZ}
+\begin{tikzpicture}\node[label=above:{$ y=2-a\sqrt{b-x} $}]{\begin{tikzpicture}[scale=.56,label style/.append style={font=\footnotesize}]
+\tkzInit[xmin=-1,xmax=7,ymin=-5,ymax=3]
+\tkzDrawXY[noticks,font=\scriptsize]\tkzClip
+\tkzDefPoints{1.570796/-4/A, 1.570796/0/AX, 0/-4/AY, 6.2831853/-1/B, 6.2831853/0/BX, 0/-1/BY}
+\tkzFct[samples=100,domain=0:2*pi]{-1-3*sin(x)}
+\tkzDrawSegments[very thin,gray,dotted](A,AY A,AX B,BX B,BY)
+\tkzLabelPoint[above](AX){$ \dfrac{\pi}{2} $}\tkzLabelPoint[above](BX){$ 2\pi $}\tkzLabelPoint[left](AY){$ -4 $}\tkzLabelPoint[left](BY){$ -1 $}
+\end{tikzpicture}};\end{tikzpicture}&
+\begin{tikzpicture}\node[label=above:{$ y=a+b\sin x $}]{\begin{tikzpicture}[scale=.56,label style/.append style={font=\footnotesize}]
+\tkzInit[xmin=-5,xmax=3,ymin=-3,ymax=5]
+\tkzDrawXY[noticks,font=\scriptsize]\tkzClip
+\tkzDefPoints{-3/0/A, -2/0/B, 0/-1/C,-3/5/D}
+\tkzFct[samples=800,domain=-3:3]{log(x+3)/log(.33333)}
+\tkzDrawSegments[dotted](A,D)
+\tkzLabelPoint[below](A){$ -3 $}\tkzLabelPoint[above right=-2mm](B){$ -2 $}\tkzLabelPoint[below left=-1mm](C){$ -1 $}
+\end{tikzpicture}};\end{tikzpicture}&
+\begin{tikzpicture}\node[label=above:{$ y=\log_{a}(x+b) $}]{\begin{tikzpicture}[scale=.56,label style/.append style={font=\footnotesize}]
+\tkzInit[xmin=-3.5,xmax=3.5,ymin=-5,ymax=3]
+\tkzDrawXY[noticks,font=\scriptsize]\tkzClip
+\tkzDefPoints{-1/-2/A, -1/0/AX, 0/-2/AY, 3/2/B, 3/0/BX, 0/2/BY}
+\tkzFct[samples=800,domain=-3.5:3.5]{2-2*sqrt(3-x)}
+\tkzDrawSegments[very thin,gray,dotted](A,AY A,AX B,BX B,BY)
+\tkzLabelPoint[above](AX){$ -1 $}\tkzLabelPoint[below](BX){$ 3 $}\tkzLabelPoint[right](AY){$ -2 $}\tkzLabelPoint[left](BY){$ 2 $}
+\end{tikzpicture}};\end{tikzpicture}
+\end{tabularx}\end{center}}{1.5}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\soal{
+هر یک از عبارت‌های ستون سمت راست را به پاسخ صحیح در ستون سمت چپ وصل کنید.
+\begin{center}\setlength{\tabcolsep}{1cm}\FontItem
+\begin{tabular}{l@{$ \bigstar\hspace*{2cm} $ }r}\newcommand{\SA}{ }
+احتمال حتمی $ ‎\bigstar $ & صفر ‎\\
+بزرگ‌ترین عدد صحیح منفی $ ‎\bigstar $ & یک ‎\\
+طول برداری که با محور عرض موازی است $ ‎\bigstar $ & نامعلوم‎ ‎\\
+هر عددی به توان یک 
+$ ‎\bigstar $ & $ -1 $ \\ & خودش
+\end{tabular}\end{center}}{1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\soal{ \newfont\dice{dice3d}
+می‌خواهیم یک تاس سالم را $ 600 $ بار پرتاب کنیم.
+\begin{ItemURSB}{1}{0}{-1}{0}\mitema{
+انتظار داریم چند بار ‎‎\!‎\!‎\tikz[baseline=-1mm]\node{‎\dice 5};‎‎ بیاید؟ 
+}\mitema{
+اگر در $ 20 $ بار پرتاب اول هیچ بار ‎\!‎\!‎\tikz[baseline=-1mm]\node{‎\dice 3};‎ نیاید، چقدر احتمال دارد در $ 21 $اُمین پرتاب ‎\!‎\!‎\tikz[baseline=-1mm]\node{‎\dice 3};‎ بیاید؟
+}\end{ItemURSB}}{0.5 }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\soal{
+جملات درست را با «ص» و جملات نادرست را با «غ» مشخص کنید. 
+\begin{ItemURSB}{0}{0}{3}{2} \mitema{
+اگر دو عدد اول باشند، آن‌گاه بزرگ‌ترین شمارنده‌ی مشترک آن دو عدد یک است.
+\tikz[baseline=-2mm]\node[draw,minimum size=4mm]{};‎}\mitema{$ 9 $
+برابر عدد $ ‎3^{4}‎ $ برابر $‎ 27^{4‎} ‎$ است
+\tikz[baseline=-2mm]\node[draw,minimum size=4mm]{};‎}\end{ItemURSB}}{1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\soal{\begin{ItemURSB}{-7}{-3}{0}{-3}\yek\mitema{
+نمودار حبابی داده‌های جدول زیر را رسم کنید
+\\[-7mm]\begin{tabularx}{\soaltextwidth}{ZZ}
+\setlength{\tabcolsep}{5mm}\begin{tabular}{|>{\columncolor{\ExamColor}}c||c|c|c|}
+\hline نام & \colCe{\ExamColor}{قد}& \colCe{\ExamColor}{وزن}& \colCe{\ExamColor}{سن}
+\\[1mm] \hhline{|=||=|=|=|}
+ وحید & $ 190 $ & $ 80 $ & $ 40 $ \\ \hline
+سعید & $ 150 $ & $ 40 $ & $ 10 $ \\ \hline 
+\end{tabular}&
+\begin{tikzpicture}[yscale=.585,xscale=.765,baseline=20mm,decoration=snake,a/.style={decoration={pre length=#1,post length=#1,segment length=1.2mm}}]
+\clip (-1,-1) rectangle (7.8,8.5);
+\begin{small}
+%\draw (1,0)   node[below] {$ 140 $};
+\draw (2,0) node[below] {$ 150 $};
+%\draw (3,0) node[below] {$ 160 $};
+\draw (4,0) node[below] {$ 170 $};
+%\draw (5,0) node[below] {$ 180 $};
+\draw (6,0) node[below] {$ 190 $};
+%\draw (7,0) node[below] {$ 200 $};
+%\draw (0,1)   node[left] {$ 30 $};
+\draw (0,2)   node[left] {$ 40 $};
+%\draw (0,3) node[left] {$ 50 $};
+\draw (0,4) node[left] {$ 60 $};
+%\draw (0,5) node[left] {$ 70 $};
+\draw (0,6) node[left] {$ 80 $};
+%\draw (0,7) node[left] {$ 90 $};
+\end{small}
+\draw [->] (0,1)--(0,7.5) node (yaxis) [above] {\footnotesize\rl{وزن}};
+\draw [->] (1,0)--(7,0) node (xaxis) [right] {\footnotesize\rl{قد}};
+\draw  (-.1,1) grid (.1,7);
+\draw  (1,-.1) grid (6.5,.1);
+\draw[thick,decorate,a=2mm] (0,0) -- (1,0);
+\draw[thick,decorate,a=2mm] (0,0) -- (0,1);
+\end{tikzpicture}\end{tabularx}
+}\mitema{
+داده‌های گردآوری شده‌ از بازی‌های بازیکن $ X $ در طول یک فصل را در جدول زیر می‌بینید. نمودار راداری آن را رسم کنید.
+\\[1mm]\begin{tabularx}{\soaltextwidth}{ZZ}
+\setlength{\tabcolsep}{5mm}\begin{tabular}{|>{\columncolor{\ExamColor}}c||c|c|}
+\hline متغیر & \colCe{\ExamColor}{$ X $}& \colCe{\ExamColor}{بیشینه}
+\\[1mm] \hhline{|=||=|=|}
+ تعداد بازی & $ 18 $ & $ 30 $ \\ \hline
+ گل زده & $ 12 $ & $ 15 $ \\ \hline
+ دریپل موفق & $ 20 $ & $ 100 $ \\ \hline
+ پاس موفق & $ 40 $ & $ 80 $ \\ \hline
+\end{tabular}&
+\begin{tikzpicture}[scale=.38,baseline=0mm,label style/.append style={font=\footnotesize}]
+\draw [->] (0,0)--(0,5.5) node (yaxis) [above] {\footnotesize\rl{تعداد بازی}};
+\draw [->] (0,0)--(0,-5.5) node (yaxis) [below] {\footnotesize\rl{گل زده}};
+\draw [->] (0,0)--(5.5,0) node (xaxis) [right] {\footnotesize\rl{دریپل موفق}};
+\draw [->] (1,0)--(-5.5,0) node (xaxis) [left] {\footnotesize\rl{پاس موفق}};
+\draw  (-.1,-5) grid (.1,5);
+\draw  (-5,-.1) grid (5,.1);
+\foreach \i in {1,2,3,4,5}{\draw[color=gray!30]  (0,0) circle [radius=\i];}
+\end{tikzpicture}\end{tabularx}}\end{ItemURSB}}{1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\soal{
+در هر مورد، نمودار تابع داده شده را رسم کنید.
+\\[-1mm]\begin{tabularx}{\textwidth}{XcX}
+\begin{tikzpicture}\node[label=above:{$ y=\dfrac{\sin (x)+|\sin(x)|}{2} $},label distance=-10mm]{\begin{tikzpicture}[xscale=.8377576,yscale=.566666,label style/.append style={font=\footnotesize}]
+\tkzInit[xmin=-4,xmax=4,ymin=-3,ymax=4]\tkzClip[space=1]
+\tkzGrid[color=gray!60,very thin]
+\tkzDrawXY[noticks,font=\scriptsize,thick]\tkzClip
+\end{tikzpicture}};\end{tikzpicture}&&
+\begin{tikzpicture}\node[label=above:{$ y=\dfrac{\log x}{[x]+[-x]} $},label distance=-10mm]{\begin{tikzpicture}[xscale=.566666,yscale=.566666,label style/.append style={font=\footnotesize}]
+\tkzInit[xmin=-3,xmax=5,ymin=-3,ymax=4]\tkzClip[space=1]
+\tkzGrid[color=gray!60,very thin]
+\tkzDrawXY[noticks,font=\scriptsize,thick]\tkzClip
+\end{tikzpicture}};\end{tikzpicture}
+\end{tabularx}\vspace{-6mm}}{1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\soal{
+اگر از بالا و سمت راست به شکل زیر نگاه کنیم، چه تصویر‌هایی می‌بینیم؟ ‎‎\footnotesize(در صفحات شطرنجی زیر شکل‌هایی که می‌بینید، را رسم کنید.)
+\begin{center}\begin{tabular}{c@{\hspace*{2cm}}c@{\hspace*{2cm}}c}
+\begin{tikzpicture}[scale=.6]
+\planepartition{{3,3},{2,1}}
+\end{tikzpicture}&\begin{tikzpicture}[scale=.6]
+\tkzInit[xmin=-2,xmax=2,ymin=-2,ymax=2]\tkzGrid
+\end{tikzpicture}&\begin{tikzpicture}[scale=.6]
+\tkzInit[xmin=-2,xmax=2,ymin=-2,ymax=2]\tkzGrid
+\end{tikzpicture}\\[-2mm] & دید از بالا & دید از سمت راست \end{tabular}\end{center}}{0.5}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\EndAzadExam
+\end{document}

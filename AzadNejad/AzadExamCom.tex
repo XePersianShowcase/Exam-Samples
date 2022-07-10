@@ -1,0 +1,493 @@
+%% تعریف بسته‌ها‌ی مورد نیاز
+\usepackage{tabularx,colortbl,hhline,longtable}%%%%<<<======== بسته‌هایی برای جدول کشیدن مثلا جدول برگه امتحان تشریحی
+\usepackage{totcount}%%%%<<<======== بسته‌ای برای پیدا کردن تعداد تمام سؤالات
+\usepackage{lastpage}%%%%<<<======== بسته‌ای برای پیدا کردن تعداد تمام سؤالات
+\usepackage{fontspec,setspace,calc,ifthen}
+\usepackage{fancyhdr}%%%%<<<======== بسته‌ای برای سربرگ زدن
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}%%%%<<<======== بسته‌ای برای عبارات ریاضی از جمله متن نوشتن بالای فلش‌ها
+%\usepackage{cancel}%%%%<<<======== بسته‌ای برای خط زدن عبارات
+\usepackage[at]{easylist}\let\NEWLIST\NewList
+\usepackage[many]{tcolorbox}
+\usepackage{xcolor}
+\usepackage{catchfile,environ}
+\usepackage[final]{pdfpages}
+\usepackage{tikz}\usetikzlibrary{datavisualization}
+\usepackage{pgfplots}
+\usepackage{tkz-euclide}\usetkzobj{all}
+\usepackage{tkz-fct}
+\usepackage[logo=off,Kashida=off,computeautoilg=off,mathfontsizescale=.93,fontsizescale=1]{xepersian}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  تعریف فونت‌‌ها
+\settextfont{Yas}\setlatintextfont{Times New Roman}\setmathdigitfont{Yas}
+\defpersianfont\nil[Scale=.92]{Yas}\defpersianfont\ti[Scale=1]{Yas}\defpersianfont\sina[Scale=.8]{Yas}
+\defpersianfont\ya[Scale=.95]{Yas}\defpersianfont\narm[Scale=1]{Yas}\defpersianfont\yek[Scale=.95]{Yas}
+
+%\settextfont[Scale=1]{XB Niloofar}\setlatintextfont[Scale=1]{Linux Libertine}\setmathdigitfont[Scale=1]{Yas}
+%\defpersianfont\nil[Scale=.92]{XB Niloofar}\defpersianfont\ti[Scale=1]{B Titr}\defpersianfont\sina[Scale=.8]{B Sina}
+%\defpersianfont\ya[Scale=.95]{Yagut}\defpersianfont\narm[Scale=1]{X Narm}\defpersianfont\yek[Scale=.95]{BYekan}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% تعریف محیطی برای برگه‌ی امتحان تشریحی
+\def\colCell#1#2{\multicolumn{1}{|>{\columncolor{#1}}c|}{#2}}\def\colCel#1#2{\multicolumn{1}{|>{\columncolor{#1}}c}{#2}}\def\colCe#1#2{\multicolumn{1}{>{\columncolor{#1}}c|}{#2}}
+\newcommand{\colframexam}{red!75!black}\newcommand{\ExamColor}{red!5}
+\newcommand{\StartAzadExam}{\addtolength{\arrayrulewidth}{1pt}\arrayrulecolor{\colframexam}
+\setlength{\extrarowheight}{.85mm}\setlength{\tabcolsep}{1mm}\vspace*{-4.5mm}
+\setlength{\extrarowheight}{1.5mm}\begin{longtable}{|>{\columncolor{\ExamColor}}c|c|>{\columncolor{\ExamColor}}c|}
+\hline {\small \narm ردیف} &  \colCell{\ExamColor}{\narm با یاد خدا دل‌ها آرام می‌گیرد.} & {\small\narm نمره}
+\\[1mm]\hhline{|=|=|=|}\endfirsthead
+\hline {\small \narm ردیف} &  \colCell{\ExamColor}{\narm  ادامه‌ی سؤالات } & {\small\narm نمره}
+\\[1mm]\hhline{|=|=|=|}\endhead
+\hline \multicolumn{3}{|>{\columncolor{\ExamColor}}c|}{\narm{ادامه‌ِی سؤالات در صفحه‌ی بعد}} \\ \hline\endfoot
+\hline \multicolumn{3}{|>{\columncolor{\ExamColor}}c|}{\narm{موفق باشید.}} \\ \hline\endlastfoot}
+\newcommand{\EndAzadExam}{\end{longtable}}
+
+%%%%%%%%%
+\newlength{\soalradif}\settowidth{\soalradif}{ردیف}
+\newlength{\soalbarom}\settowidth{\soalbarom}{بارم}\addtolength{\soalbarom}{3mm}
+\newlength{\soaltextwidth}\setlength{\soaltextwidth}{\textwidth}\addtolength{\soaltextwidth}{-\soalbarom}\addtolength{\soaltextwidth}{-\soalradif-10mm}
+\regtotcounter{page}\newtotcounter{numSoal}\setcounter{numSoal}{0}
+\newcommand{\soal}[2]{\addtocounter{numSoal}{1}
+	\parbox[t]{\soalradif}{\centering{\sina\thenumSoal}}&\parbox[t]{\soaltextwidth}{\raggedleft{\yek#1}}&\parbox[t]{\soalbarom}{\vspace{-8mm}\small\begin{gather*}#2\end{gather*}}\\ \hline}
+
+%%%%%%%%%
+%%%تعریف سربرگ امتحان تشریحی
+\newcommand{\AzadExamHeader}{
+\pagestyle{fancy}\setlength{\footskip}{0mm}\renewcommand{\headrulewidth}{0pt}\fancyhf{}\setlength{\headheight}{100pt}
+\addtolength{\headsep}{-22pt}\fancyhead[]{\begin{tcolorbox}[colback=\ExamColor,colframe=\colframexam,top=0pt,bottom=0pt,right=0pt,left=0pt,nobeforeafter]\small\addtolength{\extrarowheight}{-1.2mm}
+\begin{tabularx}{\textwidth}{rZr}\AzadExamInformation\end{tabularx}\end{tcolorbox}}}
+
+%%%%%%%%%
+%%%تعریف محل درج نمره امتحان تشریحی
+\newcolumntype{Z}{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}X}
+\newcommand{\ANomre}{\begin{tcolorbox}[colback=\ExamColor,colframe=\colframexam,top=0pt,bottom=0pt,right=0pt,left=0pt]\small
+\begin{tabularx}{\textwidth}{rZr}
+نمره‌ به عدد: ‎ ‎\hspace{12mm}‎& نمره به حروف: ‎& امضای دبیر: ‎ ‎\hspace{17mm}‎‎‎ 
+\end{tabularx}\end{tcolorbox}}
+
+%%%%%%%%%
+%\def\Smaghte#1{\gdef\@Smaghte{#1}}\def\Spaye#1{\gdef\@Spaye{#1}}\def\Sostan#1{\gdef\@Sostan{#1}}\def\Sshahr#1{\gdef\@Sshahr{#1}}
+%\def\Smadresa#1{\gdef\@Smadresa{#1}}\def\Starikh#1{\gdef\@Starikh{#1}}\def\Smozo#1{\gdef\@Smozo{#1}}\def\Sdars#1{\gdef\@Sdars{#1}}
+%\def\Smoddat#1{\gdef\@Smoddat{#1}}\newcommand{\ASarBarg}[9]{
+%\vspace*{-6mm}\centerline{\mbox{\begin{tcolorbox}[colback=\ExamColor,colframe=\colframexam ,top=0pt,bottom=0pt,nobeforeafter]\begin{tabular}{@{\hspace*{1mm}}c@{}c@{}c@{\hspace*{1mm}}}
+%\parbox[t]{3.6cm}{\vspace*{-1mm}نام و نام خانوادگی: \\[1mm]نام پدر: \\[1mm]مقطع: \Smaghte{#1}\@Smaghte \\[1mm]پایه‌ی تحصیلی: \Spaye{#2}\@Spaye\\[1mm]کلاس شماره‌ی: }&
+%\parbox[t]{\textwidth-7cm}{\centering{باسمه تعالی\\[1.5mm]اداره ‌کل آموزش و پرورش استان \Sostan{#3}\@Sostan\\[1mm]مدیریت آموزش و پرورش \Sshahr{#4}\@Sshahr\\[1mm]\Smadresa{#5}\@Smadresa\\[1mm]}}&
+%\parbox[t]{3.4cm}{\vspace*{-1mm}تاریخ آزمون: \Starikh{#6}\@Starikh\\[.7mm]آزمونِ \Smozo{#7}\@Smozo\\[.7mm]تعداد \total{numSoal}سؤال در \pageref{LastPage}صفحه\\[.7mm]درس: \Sdars{#8}\@Sdars \\[.7mm]مدت برگزاری: \Smoddat{#9}\@Smoddat دقیقه
+%}\end{tabular}\end{tcolorbox}}\ANomre}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% محیطی برای سوال و تست شامل شکل
+\newlength{\AExamPicMargin} \setlength{\AExamPicMargin}{7mm}
+\newlength{\AExamPicMainWidth}\setlength{\AExamPicMainWidth}{\soaltextwidth-\AExamPicMargin}
+\newlength{\thispic}\newlength{\AzadWidthPic}\newcommand{\FontTpicTest}{\yek}
+\newenvironment{TpicTest}[3][0.2]{\settowidth{\thispic}{#3}\begin{minipage}[t]{\AExamPicMainWidth}\FontTpicTest\setlength{\AzadWidthPic}{\maxof{\thispic}{#1\textwidth}}
+\begin{minipage}[t]{\AExamPicMainWidth-\AzadWidthPic-2mm}#2\end{minipage}\hfill
+	\raisebox{-\height+0mm}[0pt][\height-10mm]{\begin{minipage}[t]{\AzadWidthPic}{#3}\end{minipage}}}{\end{minipage}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% تعریف محیطی برای آدرس تست‌ها
+\newcommand*{\AzadAdress}[2][0]{\vspace*{#1mm}\hspace{\fill}\mbox{}\linebreak[0]  \hspace*{\fill}\mbox{\tiny(#2)}\vspace*{#1mm}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%تعریف دستوری برای نوشتن متن روی جای خالی
+%\newcommand{\BoxOnLine}[2][30]{\raisebox{.2ex}{\makebox[0pt][l]{#2}}{\line(1,0){#1}} }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% بهتر کردن کسر‌ها
+\let\OldFrac\dfrac \newcommand{\myfrac}[2]{\OldFrac{\raisebox{-2pt}{$ #1 $}}{\raisebox{2pt}{$ #2 $}}} \let\dfrac\myfrac
+\newcommand{\Afrac}[2]{\dfrac{\text{\scriptsize $ #1 $}}{\raisebox{2pt}{\text{\scriptsize $ #2 $}}}}
+\newcommand{\Ainfty}{\text{\footnotesize$\infty$}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% علامت موازی بودن روی سگمنت‌ها
+\tikzset{AMidArrow/.style={postaction=decorate,decoration={markings,mark=at position #1 with {\arrow[thick]{stealth}}}}}
+\pgfarrowsdeclaredouble{<<s}{>>s}{stealth}{stealth}\tikzset{AAMidArrow/.style={>=stealth,postaction=decorate,decoration={markings,mark=at position #1 with {\arrow[thick]{>>}}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% تعریف کمان بالای یک عبارت
+\makeatletter\DeclareFontFamily{U}{tipa}{}\DeclareFontShape{U}{tipa}{m}{n}{<->tipa10}{}\newcommand{\arc@char}{{\usefont{U}{tipa}{m}{n}\symbol{62}}}%
+\newcommand{\arc}[1]{\mathpalette\arc@arc{#1}}\newcommand{\arc@arc}[2]{\sbox0{$\m@th#1#2$}\vbox{\hbox{\resizebox{\wd0}{\height}{\arc@char}}\nointerlineskip\box0}}\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% تعریف دستور برای مختصات بردار
+\newcommand{\mou}[2]{\begin{Large} \left[\begin{smallmatrix} #1 \\[.5mm] #2  \end{smallmatrix}\right] \end{Large}}
+\newcommand{\mat}[2]{\begin{bmatrix} #1 \\ #2  \end{bmatrix}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% تعریف محیط چهار‌گزینه‌ای
+\newlength{\ATestMargin}\setlength{\ATestMargin}{12mm}
+\newlength{\ATestMainWidth}\setlength{\ATestMainWidth}{\soaltextwidth-\ATestMargin}
+\newcommand{\AGozineColor}{\colframexam}
+\newcommand{\AGozineVsep}{\\[.5mm]}\newcommand{\AGozineHsep}{\;}
+\newcommand{\AGozineFont}{\nil\mdseries}
+\newcommand{\AGozineBoxEmpty}{\tikz[baseline=-3pt]\node[rounded corners,\AGozineColor,draw,text height=5.8pt,text depth=-1.6pt,inner xsep=5pt]}
+\newcommand{\AGozineBoxFill}{\tikz[baseline=-3pt]\node[rounded corners,\AGozineColor,draw,inner ysep=2pt,inner xsep=5pt,pattern=north east lines,,pattern color=\AGozineColor]}
+
+\newcommand{\AGozineOneRow}[1]{\begin{tabular}{@{}p{0.25\ATestMainWidth}@{}p{0.25\ATestMainWidth}@{}p{0.25\ATestMainWidth}@{}r@{}}#1\end{tabular}}
+\newcommand{\AGozineTwoRow}[1]{\begin{tabular}{@{}p{0.5\ATestMainWidth}@{}r@{}}#1\end{tabular}}
+\newcommand{\AGozineFourRow}[1]{\begin{tabular}{@{}p{\ATestMainWidth}@{}}#1\end{tabular}}
+\newcommand{\AGozineEmpty}{\gdef\AGozineBox{\AGozineBoxEmpty}}\newcommand{\AGozineFill}{\gdef\AGozineBox{\AGozineBoxFill}}
+
+\newcommand{\GozineX}[1]{\mbox{\AGozineBoxEmpty{1};\AGozineHsep#1}}
+\newcommand{\GozineXX}[1]{\mbox{\AGozineBoxEmpty{2};\AGozineHsep#1}}
+\newcommand{\GozineXXX}[1]{\mbox{\AGozineBoxEmpty{3};\AGozineHsep#1}}
+\newcommand{\GozineXXXX}[1]{\mbox{\AGozineBoxEmpty{4};\AGozineHsep#1}}
+\newcommand{\GozineY}[1]{\mbox{\AGozineBox{1};\AGozineHsep#1}}
+\newcommand{\GozineYY}[1]{\mbox{\AGozineBox{2};\AGozineHsep#1}}
+\newcommand{\GozineYYY}[1]{\mbox{\AGozineBox{3};\AGozineHsep#1}}
+\newcommand{\GozineYYYY}[1]{\mbox{\AGozineBox{4};\AGozineHsep#1}}
+
+\newenvironment{a1}[4]{\AGozineVsep\AGozineFont\AGozineOneRow{\GozineX{#1}&\GozineXX{#2}&\GozineXXX{#3}&\GozineXXXX{#4}}}{}
+\newenvironment{a2}[5][0mm]{\AGozineVsep\AGozineFont\AGozineTwoRow{\GozineX{#2}&\GozineXX{#3}\\[#1]\GozineXXX{#4}&\GozineXXXX{#5}}}{}
+\newenvironment{a4}[5][0mm]{\AGozineVsep\AGozineFont\AGozineFourRow{\GozineX{#2}\\[#1]\GozineXX{#3}\\[#1]\GozineXXX{#4}\\[#1]\GozineXXXX{#5}}}{}
+
+\newenvironment{a1g1}[4]{\AGozineVsep\AGozineFont\AGozineOneRow{\GozineY{#1}&\GozineXX{#2}&\GozineXXX{#3}&\GozineXXXX{#4}}}{}
+\newenvironment{a1g2}[4]{\AGozineVsep\AGozineFont\AGozineOneRow{\GozineX{#1}&\GozineYY{#2}&\GozineXXX{#3}&\GozineXXXX{#4}}}{}
+\newenvironment{a1g3}[4]{\AGozineVsep\AGozineFont\AGozineOneRow{\GozineX{#1}&\GozineXX{#2}&\GozineYYY{#3}&\GozineXXXX{#4}}}{}
+\newenvironment{a1g4}[4]{\AGozineVsep\AGozineFont\AGozineOneRow{\GozineX{#1}&\GozineXX{#2}&\GozineXXX{#3}&\GozineYYYY{#4}}}{}
+
+\newenvironment{a2g1}[5][0mm]{\AGozineVsep\AGozineFont\AGozineTwoRow{\GozineY{#2}&\GozineXX{#3}\\[#1]\GozineXXX{#4}&\GozineXXXX{#5}}}{}
+\newenvironment{a2g2}[5][0mm]{\AGozineVsep\AGozineFont\AGozineTwoRow{\GozineX{#2}&\GozineYY{#3}\\[#1]\GozineXXX{#4}&\GozineXXXX{#5}}}{}
+\newenvironment{a2g3}[5][0mm]{\AGozineVsep\AGozineFont\AGozineTwoRow{\GozineX{#2}&\GozineXX{#3}\\[#1]\GozineYYY{#4}&\GozineXXXX{#5}}}{}
+\newenvironment{a2g4}[5][0mm]{\AGozineVsep\AGozineFont\AGozineTwoRow{\GozineX{#2}&\GozineXX{#3}\\[#1]\GozineXXX{#4}&\GozineYYYY{#5}}}{}
+
+\newenvironment{a4g1}[5][0mm]{\AGozineVsep\AGozineFont\AGozineFourRow{\GozineX{#2}\\[#1]\GozineXX{#3}\\[#1]\GozineXXX{#4}\\[#1]\GozineXXXX{#5}}}{}
+\newenvironment{a4g2}[5][0mm]{\AGozineVsep\AGozineFont\AGozineFourRow{\GozineX{#2}\\[#1]\GozineXX{#3}\\[#1]\GozineXXX{#4}\\[#1]\GozineXXXX{#5}}}{}
+\newenvironment{a4g3}[5][0mm]{\AGozineVsep\AGozineFont\AGozineFourRow{\GozineX{#2}\\[#1]\GozineXX{#3}\\[#1]\GozineXXX{#4}\\[#1]\GozineXXXX{#5}}}{}
+\newenvironment{a4g4}[5][0mm]{\AGozineVsep\AGozineFont\AGozineFourRow{\GozineX{#2}\\[#1]\GozineXX{#3}\\[#1]\GozineXXX{#4}\\[#1]\GozineXXXX{#5}}}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter\def\tikz@parse@polar#1(#2:#3){\pgfutil@ifundefined{tikz@polar@dir@#2}{\tikz@@parse@polar#1({#2}:{#3})}
+	{\tikz@@parse@polar#1(\csname tikz@polar@dir@#2\endcsname:#3)}}
+	\def\tikz@@parse@polar#1(#2:#3){\pgfutil@in@{ and }{#3} \ifpgfutil@in@ \edef\tikz@args{({#2}:#3)}
+	\else\edef\tikz@args{({#2}:{#3} and {#3})}\fi \expandafter\tikz@@@parse@polar\expandafter#1\tikz@args}\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% تعریف محیطی برای نوشتن تست
+\newcommand{\ATestVsep}{4mm}
+\newtcbox{\mybox}{on line,arc=1pt,colback=yellow,colframe=green,before upper={\rule[0pt]{0pt}{0pt}},boxrule=1pt,boxsep=0pt,left=2.5pt,right=2.5pt,top=2.7pt,bottom=2.3pt}
+\newtcbox{\BlackWhiteMyBox}{on line,arc=1pt,colback=black!10,colframe=black,before upper={\rule[0pt]{0pt}{0pt}},boxrule=1pt,boxsep=0pt,left=2.5pt,right=2.5pt,top=2.7pt,bottom=2.3pt}
+\newcommand{\ATestNumberBox}{\mybox}
+\newenvironment{mylist}{\vspace*{-\parskip}\vspace*{-\baselineskip}\leavevmode\Activate\begin{easylist}\ListProperties(
+Style1*={\medskip\yas\color{black}},Hang=true,Margin1=-16mm,Space1*=\ATestVsep,Style1={\yek\small \bfseries\color{black}}, FinalSpace=4mm,CtrCom1={\ATestNumberBox},FinalMark1=-,Align1=8mm)}{\end{easylist}\Deactivate\leavevmode}
+\newenvironment{QBlist}{\begin{minipage}{\textwidth}\begin{mylist}}{\end{mylist}\end{minipage}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% تعریف بانک سؤال
+\makeatletter% Taken from http://tex.stackexchange.com/q/109619/5764
+\def\declarenumlist#1#2#3{%
+  \expandafter\edef\csname pgfmath@randomlist@#1\endcsname{#3}%
+  \count@\@ne
+  \loop
+    \expandafter\edef
+    \csname pgfmath@randomlist@#1@\the\count@\endcsname
+      {\the\count@}
+    \ifnum\count@<#3\relax
+    \advance\count@\@ne
+  \repeat}
+\def\prunelist#1{%
+  \expandafter\xdef\csname pgfmath@randomlist@#1\endcsname
+          {\the\numexpr\csname pgfmath@randomlist@#1\endcsname-1\relax}
+  \count@\pgfmath@randomtemp 
+  \loop
+    \expandafter\global\expandafter\let
+    \csname pgfmath@randomlist@#1@\the\count@\expandafter\endcsname
+    \csname pgfmath@randomlist@#1@\the\numexpr\count@+1\relax\endcsname
+    \ifnum\count@<\csname pgfmath@randomlist@#1\endcsname\relax
+      \advance\count@\@ne
+  \repeat}
+\makeatother
+
+% Define how each questionblock should be handled
+\newcounter{questionblock}
+\newcounter{totalquestions}
+\NewEnviron{QB}{}%
+
+\newcommand{\randomquestionsfrombank}[2]{%
+  \CatchFileDef{\bank}{#1}{}% Read the entire bank of questions into \bank
+  \setcounter{totalquestions}{0}% Reset total questions counters  ***
+  \RenewEnviron{QB}{\stepcounter{totalquestions}}% Count every question  ***
+  \bank% Process file  ***
+  \declarenumlist{uniquequestionlist}{1}{\thetotalquestions}% list from 1 to totalquestions inclusive.
+  \setcounter{totalquestions}{#2}% Start the count-down
+  \RenewEnviron{QB}{%
+    \stepcounter{questionblock}% Next question
+    \ifnum\value{questionblock}=\randomquestion 
+      \par% Start new paragraph
+\begin{QBlist}
+\BODY% Print question
+\end{QBlist}
+          \fi
+  }%
+  \foreach \uNiQueQ in {1,...,#2} {% Extract #2 random questions
+    \setcounter{questionblock}{0}% Start fresh with question block counter
+    \pgfmathrandomitem\randomquestion{uniquequestionlist}% Grab random question from list
+    \xdef\randomquestion{\randomquestion}% Make random question available globally
+    \prunelist{uniquequestionlist}% Remove picked item from list
+    \bank% Process file
+  }}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% تعریف محیط ItemURSB برای آیتم‌بندی سؤالات
+\newcommand{\FontItem}{\ya\mdseries}
+\setlength{\hsize}{\textwidth}\newcommand{\sepa}{\hspace*{0mm}}\newlength{\seplabel}\setlength{\seplabel}{2pt}
+\newcommand{\labelmark}{)}\newcommand{\labelmarkF}{)}\newcommand{\labelmarkE}{\hspace*{1.5mm}(}
+\newcommand{\labelname}{\csname labelenum\romannumeral\themultienumdepth\endcsname}
+\newlength{\usedx}\newlength{\remainx}\newlength{\usedxx}\newlength{\remainxx}\newlength{\usedxxx}\newlength{\remainxxx}\newlength{\usedxxxx}\newlength{\remainxxxx}
+\newlength{\remainxox}\newlength{\remainxoxx}\newlength{\remainxxxxx}\newlength{\usedxxxxx}
+
+\newcommand{\itemx}[1]{\mbox{\vspace{0mm}\parbox[t]{\remainx}{\raggedright #1}\hskip\labelsep\parbox[t]{\labelwidth}{\labelmarkE\labelname}\vspace*{0mm}}}
+\newcommand{\itemy}[1]{\hfill\mbox{\parbox[t]{\remainx}{\raggedright #1}}}
+\newcommand{\itema}[1]{\mbox{\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\begin{minipage}[t]{\remainx}\sepa\raggedleft #1\end{minipage}\smallskip}}
+
+\newcommand{\itemxx}[2]{\smallskip\mbox{\parbox[t]{0.49\remainxx}{\raggedright #2}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{1}\labelmarkE\labelname}}\hfill
+	\mbox{\parbox[t]{0.49\remainxx}{\raggedright #1}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}\labelmarkE\labelname\addtocounter{multienumi}{1}}}}
+\newcommand{\itemyy}[2]{\smallskip\mbox{\parbox[t]{0.49\remainxx}{\raggedright #2}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{1}}}\hfill
+	\mbox{\parbox[t]{0.49\remainxx}{\raggedright #1}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}\addtocounter{multienumi}{1}}}}
+\newcommand{\itemoo}[2]{\smallskip\mbox{\parbox[t]{0.49\remainxx}{\centering #2}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{1}}}\hfill
+	\mbox{\parbox[t]{0.49\remainxx}{\centering #1}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}\addtocounter{multienumi}{1}}}}
+
+\newcommand{\itemaa}[2]{\mbox{\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{.5\remainxx}{\sepa\raggedleft #1}}\hfill
+	\mbox{\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{0.5\remainxx}{\sepa\raggedleft #2}\smallskip}}
+
+\newcommand{\itemcc}[2]{\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{.6\remainxx}{\sepa\raggedleft #1}\hfill
+	\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{0.4\remainxx}{\sepa\raggedleft #2}\smallskip}
+
+\newcommand{\itemxxx}[3]{\mbox{\parbox[t]{0.32\remainxxx}{\raggedright #3}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{+2}\labelmarkE\labelname}}\hfill
+	\mbox{\parbox[t]{0.32\remainxxx}{\raggedright #2}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}\labelmarkE\labelname}}\hfill
+	\mbox{\parbox[t]{0.32\remainxxx}{\raggedright #1}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}\labelmarkE\labelname}\addtocounter{multienumi}{2}}}%\smallskip
+
+\newcommand{\itemyyy}[3]{\mbox{\parbox[t]{0.32\remainxxx}{\raggedright #3}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{+2}}}\hfill
+	\mbox{\parbox[t]{0.32\remainxxx}{\raggedright #2}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}}}\hfill
+	\mbox{\parbox[t]{0.32\remainxxx}{\raggedright #1}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}}\addtocounter{multienumi}{2}}}%\smallskip
+
+\newcommand{\itemooo}[3]{\mbox{\parbox[t]{0.32\remainxxx}{\centering #3}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{+2}}}\hfill
+	\mbox{\parbox[t]{0.32\remainxxx}{\centering #2}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}}}\hfill
+	\mbox{\parbox[t]{0.32\remainxxx}{\centering #1}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}}\addtocounter{multienumi}{2}}}%\smallskip
+
+\newcommand{\itemaaa}[3]{\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{.3333\remainxxx}{\sepa\raggedleft #1}\hfill
+	\parbox[t]{\labelwidth}{\hfill {\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{0.3333\remainxxx}{\sepa\raggedleft #2}\hfill
+	\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{0.3333\remainxxx}{\sepa\raggedleft #3}\par}%\smallskip
+
+\newcommand{\itemxxxx}[4]{\smallskip\mbox{\parbox[t]{0.245\remainxxxx}{\raggedright #4}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{+3}\labelmarkE\labelname}}\hfill
+	\mbox{\parbox[t]{0.245\remainxxxx}{\raggedright #3}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}\labelmarkE\labelname}}\hfill
+	\mbox{\parbox[t]{0.245\remainxxxx}{\raggedright #2}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}\labelmarkE\labelname}}\hfill
+	\parbox[t]{.245\remainxxxx}{\raggedright #1}\mbox{\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}\labelmarkE\labelname}\addtocounter{multienumi}{+3}}}
+
+\newcommand{\itemyyyy}[4]{\smallskip\mbox{\parbox[t]{0.245\remainxxxx}{\raggedright #4}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{+3}}}\hfill
+	\mbox{\parbox[t]{0.245\remainxxxx}{\raggedright #3}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}}}\hfill
+	\mbox{\parbox[t]{0.245\remainxxxx}{\raggedright #2}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}}}\hfill
+	\parbox[t]{.245\remainxxxx}{\raggedright #1}\mbox{\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}}\addtocounter{multienumi}{+3}}}
+
+\newcommand{\itemoooo}[4]{\smallskip\mbox{\parbox[t]{0.245\remainxxxx}{\centering #4}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{+3}}}\hfill
+	\mbox{\parbox[t]{0.245\remainxxxx}{\centering #3}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}}}\hfill
+	\mbox{\parbox[t]{0.245\remainxxxx}{\centering #2}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}}}\hfill
+	\parbox[t]{.245\remainxxxx}{\centering #1}\mbox{\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}}\addtocounter{multienumi}{+3}}}
+
+\newcommand{\itemaaaa}[4]{\parbox[t]{\labelwidth}{\hfill{\labelname}}\hskip\labelsep\parbox[t]{.25\remainxxxx}{\sepa\raggedleft #1}\hfill
+	\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{0.25\remainxxxx}{\sepa\raggedleft #2}\hfill
+	\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{0.25\remainxxxx}{\sepa\raggedleft #3}\hfill%
+	\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{0.25\remainxxxx}{\sepa\raggedleft #4}\smallskip}
+
+\newcommand{\itemxox}[2]{\smallskip\parbox[t]{0.3333\remainxxx}{\raggedright #2}
+	\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{1}\labelmarkE\labelname}}\hfill
+	\parbox[t]{\remainxox}{\raggedright #1}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{-2}\labelmarkE\labelname\addtocounter{multienumi}{1}}}}
+
+\newcommand{\itemyoy}[2]{\smallskip\parbox[t]{0.3333\remainxxx}{\raggedright #2}
+	\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{1}}}\hfill
+	\parbox[t]{\remainxox}{\raggedright #1}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{-2}\addtocounter{multienumi}{1}}}}
+
+\newcommand{\itemaoa}[2]{\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{\remainxox}{\sepa\raggedleft #1}\hfill
+	\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{0.3333\remainxxx}{\sepa\raggedleft #2}\smallskip}
+
+\newcommand{\itemxxo}[2]{\smallskip\parbox[t]{\remainxox}{\raggedright #2}\labelsep\hskip\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{1}\labelmarkE\labelname}}\hfill
+	\parbox[t]{0.3333\remainxxx}{\raggedright #1}\labelsep\hskip\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{-2}\labelmarkE\labelname\addtocounter{multienumi}{1}}}}
+
+\newcommand{\itemyyo}[2]{\smallskip\parbox[t]{\remainxox}{\raggedright #2}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{1}}}\hfill
+	\parbox[t]{0.3333\remainxxx}{\raggedright #1}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{-2}\addtocounter{multienumi}{1}}}}
+
+\newcommand{\itemaao}[2]{\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{0.3333\remainxxx}{\sepa\raggedleft #1}\hfill%
+	\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{\remainxox}{\sepa\raggedleft #2}\smallskip}
+
+\newcommand{\itemxoxx}[3]{\smallskip\mbox{\parbox[t]{0.245\remainxxxx}{\raggedright #3}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{2}\labelmarkE\labelname}}}\hfill
+	\mbox{\parbox[t]{0.245\remainxxxx}{\raggedright #2}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{-2}\labelmarkE\labelname}}}\hfill
+	\mbox{\parbox[t]{\remainxoxx}{\raggedright #1}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{-2}\labelmarkE\labelname\addtocounter{multienumi}{2}}}}}
+
+\newcommand{\itemyoyy}[3]{\smallskip\parbox[t]{0.25\remainxxxx}{\raggedright #3}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{2}}}\hfill
+	\parbox[t]{0.25\remainxxxx}{\raggedright #2}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{-2}}}\hfill
+	\parbox[t]{\remainxoxx}{\raggedright #1}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{-2}\addtocounter{multienumi}{2}}}}
+
+\newcommand{\itemaoaa}[3]{\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{\remainxoxx}{\sepa\raggedleft #1}\hfill%
+	\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{0.25\remainxxxx}{\sepa\raggedleft #2}\hfill%
+	\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{0.25\remainxxxx}{\sepa\raggedleft #3}\smallskip}
+
+\newcommand{\itemxxox}[3]{\smallskip\mbox{\parbox[t]{0.245\remainxxxx}{\raggedright #3}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{2}\labelmarkE\labelname}}}\hfill
+	\mbox{\parbox[t]{\remainxoxx}{\raggedright #2}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{-2}\labelmarkE\labelname}}}\hfill
+	\mbox{\parbox[t]{.245\remainxxxx}{\raggedright #1}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{-2}\labelmarkE\labelname\addtocounter{multienumi}{2}}}}}
+
+\newcommand{\itemyyoy}[3]{\smallskip\parbox[t]{0.25\remainxxxx}{\raggedright #3}\parbox[t]{\labelwidth}{\hfill{}}\hfill
+	\parbox[t]{\remainxoxx}{\raggedright #2}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{-2}}}\hfill
+	\parbox[t]{.25\remainxxxx}{\raggedright #1}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{-2}\addtocounter{multienumi}{2}}}}
+
+\newcommand{\itemaaoa}[3]{\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{.25\remainxxxx}{\sepa\raggedleft #1}\hfill%
+	\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{\remainxoxx}{\sepa\raggedleft #2}\hfill%
+	\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{0.25\remainxxxx}{\sepa\raggedleft #3}\smallskip}
+
+\newcommand{\itemxxxo}[3]{\smallskip\mbox{\parbox[t]{\remainxoxx}{\raggedright #3}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{2}\labelmarkE\labelname}}}\hfill
+	\mbox{\parbox[t]{.245\remainxxxx}{\raggedright #2}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{-2}\labelmarkE\labelname}}}\hfill
+	\mbox{\parbox[t]{.245\remainxxxx}{\raggedright #1}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{-2}\labelmarkE\labelname\addtocounter{multienumi}{2}}}}}
+
+\newcommand{\itemyyyo}[3]{\smallskip\parbox[t]{\remainxoxx}{\raggedright #3}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{2}}}\hfill
+	\parbox[t]{.25\remainxxxx}{\raggedright #2}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{-2}}}\hfill
+	\parbox[t]{.25\remainxxxx}{\raggedright #1}\parbox[t]{\labelwidth}{\hfill{\addtocounter{multienumi}{-2} \addtocounter{multienumi}{2}}}}
+
+
+\newcommand{\itemaaao}[3]{\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{.25\remainxxxx}{\sepa\raggedleft #1}\hfill%
+	\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{.25\remainxxxx}{\sepa\raggedleft #2}\hfill%
+	\parbox[t]{\labelwidth}{\hfill{\labelname\labelmarkF}}\hskip\labelsep\parbox[t]{\remainxoxx}{\sepa\raggedleft #3}\smallskip}
+
+\newcommand{\itemyyyyy}[5]{\smallskip\mbox{\parbox[t]{0.2\remainxxxx}{\raggedright #5}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{+4}}}\hfill
+	\mbox{\parbox[t]{0.2\remainxxxx}{\raggedright #4}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}}}\hfill
+	\mbox{\parbox[t]{0.2\remainxxxx}{\raggedright #3}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}}}\hfill
+	\mbox{\parbox[t]{0.2\remainxxxx}{\raggedright #2}\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}}}\hfill
+	\parbox[t]{.2\remainxxxx}{\raggedright #1}\mbox{\parbox[t]{\labelwidth}{\addtocounter{multienumi}{-2}}\addtocounter{multienumi}{+4}}}
+
+\newcommand{\itemxxxxx}[5]{\parbox[t]{\labelwidth}{\hfill{\labelname}}\hskip\labelsep\parbox[t]{0.2\remainxxxxx}{\raggedright #1}\hfill%
+	\parbox[t]{\labelwidth}{\hfill{\labelmarkE\labelname}}\hskip\labelsep\parbox[t]{0.2\remainxxxxx}{\raggedright #2}\hfill%
+	\parbox[t]{\labelwidth}{\hfill{\labelmarkE\labelname}}\hskip\labelsep\parbox[t]{0.2\remainxxxxx}{\raggedright #3}\hfill%
+	\parbox[t]{\labelwidth}{\hfill{\labelmarkE\labelname}}\hskip\labelsep\parbox[t]{0.2\remainxxxxx}{\raggedright #4}\hfill%
+	\parbox[t]{\labelwidth}{\hfill{\labelmarkE\labelname}}\hskip\labelsep\parbox[t]{0.2\remainxxxxx}{\raggedright #5}\smallskip}
+
+\newcommand{\oddlisti}{\setcounter{multienumi}{-1}\renewcommand{\labelenumi}
+	{\ifodd\value{multienumi}\addtocounter{multienumi}{2}\themultienumi.\else\addtocounter{multienumi}{1}\themultienumi.\addtocounter{multienumi}{-2}\fi}}
+
+\newcommand{\evenlisti}{\setcounter{multienumi}{0}\renewcommand{\labelenumi}
+	{\ifodd\value{multienumi}\addtocounter{multienumi}{1}\themultienumi.\addtocounter{multienumi}{-2}\else\addtocounter{multienumi}{2}\themultienumi.\fi}}
+
+\newcommand{\regularlisti}{\setcounter{multienumi}{0}\renewcommand{\labelenumi}{\addtocounter{multienumi}{1}\harfi{multienumi}}}
+
+\newcommand{\regularlistii}{\setcounter{multienumii}{0}\renewcommand{\labelenumii}{\addtocounter{multienumii}{1}\harfi{multienumii}}}%\alph{multienumii}.
+
+\newcommand{\regularlistiii}{\setcounter{multienumiii}{0}\renewcommand{\labelenumiii}{\addtocounter{multienumiii}{1}\alph{multienumiii}.}}
+
+\newcommand{\regularlistiv}{\setcounter{multienumiii}{0}\renewcommand{\labelenumiv}{\addtocounter{multienumiv}{1}(\alph{multienumiv}}}
+
+\newcommand{\mitemx}[1]{\item[] \itemx{#1}}
+\newcommand{\mitemxx}[2]{\item[] \itemxx{#1}{#2}}
+\newcommand{\mitemxxx}[3]{\item[] \itemxxx{#1}{#2}{#3}}
+\newcommand{\mitemxox}[2]{\item[] \itemxox{#1}{#2}}
+\newcommand{\mitemxxo}[2]{\item[] \itemxxo{#1}{#2}}
+\newcommand{\mitemxxxx}[4]{\item[] \itemxxxx{#1}{#2}{#3}{#4}}
+\newcommand{\mitemxoxx}[3]{\item[] \itemxoxx{#1}{#2}{#3}}
+\newcommand{\mitemxxox}[3]{\item[] \itemxxox{#1}{#2}{#3}}
+\newcommand{\mitemxxxo}[3]{\item[] \itemxxxo{#1}{#2}{#3}}
+\newcommand{\mitemxxoo}[2]{\item[] \itemxxoo{#1}{#2}}
+\newcommand{\mitemxxxxx}[5]{\item[] \itemxxxxx{#1}{#2}{#3}{#4}{#5}}
+
+\newcommand{\mitemy}[1]{\item[] \itemy{#1}}
+\newcommand{\mitemyy}[2]{\item[] \itemyy{#1}{#2}}
+\newcommand{\mitemyyy}[3]{\item[] \itemyyy{#1}{#2}{#3}}
+\newcommand{\mitemyoy}[2]{\item[] \itemyoy{#1}{#2}}
+\newcommand{\mitemyyo}[2]{\item[] \itemyyo{#1}{#2}}
+\newcommand{\mitemyyyy}[4]{\item[] \itemyyyy{#1}{#2}{#3}{#4}}
+\newcommand{\mitemyoyy}[3]{\item[] \itemyoyy{#1}{#2}{#3}}
+\newcommand{\mitemyyoy}[3]{\item[] \itemyyoy{#1}{#2}{#3}}
+\newcommand{\mitemyyyo}[3]{\item[] \itemyyyo{#1}{#2}{#3}}
+\newcommand{\mitemyyoo}[2]{\item[] \itemyyoo{#1}{#2}}
+\newcommand{\mitemyyyyy}[5]{\item[] \itemyyyyy{#1}{#2}{#3}{#4}{#5}}
+
+\newcommand{\mitema}[1]{\item[] \itema{#1}}
+\newcommand{\mitemaa}[2]{\item[] \itemaa{#1}{#2}}
+\newcommand{\mitemaaa}[3]{\item[] \itemaaa{#1}{#2}{#3}}
+\newcommand{\mitemaoa}[2]{\item[] \itemaoa{#1}{#2}}
+\newcommand{\mitemaao}[2]{\item[] \itemaao{#1}{#2}}
+\newcommand{\mitemaaaa}[4]{\item[] \itemaaaa{#1}{#2}{#3}{#4}}
+\newcommand{\mitemaoaa}[3]{\item[] \itemaoaa{#1}{#2}{#3}}
+\newcommand{\mitemaaoa}[3]{\item[] \itemaaoa{#1}{#2}{#3}}
+\newcommand{\mitemaaao}[3]{\item[] \itemaaao{#1}{#2}{#3}}
+\newcommand{\mitemaaoo}[2]{\item[] \itemaaoo{#1}{#2}}
+\newcommand{\mitemcc}[2]{\item[] \itemcc{#1}{#2}}
+
+\newcommand{\mitemoo}[2]{\item[] \itemoo{#1}{#2}}
+\newcommand{\mitemooo}[3]{\item[] \itemooo{#1}{#2}{#3}}
+\newcommand{\mitemoooo}[4]{\item[] \itemoooo{#1}{#2}{#3}{#4}}
+
+\newcounter{multienumdepth}\setcounter{multienumdepth}{0}
+\newcounter{multienum}\newcounter{multienumi}\newcounter{multienumii}\newcounter{multienumiii}\newcounter{multienumiv}
+
+\newcommand{\listtype}[1]{#1}\newlength{\ItemBottom}
+\newenvironment{ItemURSB}[5][regularlist]{\FontItem
+	\ifnum \themultienumdepth >3 \@toodeep\else\addtocounter{multienumdepth}{1}%
+	\edef\@multienumctr{multienum\romannumeral\themultienumdepth}%
+	{\csname label\@multienumctr\endcsname}{\usecounter{\@multienumctr}}%
+	\listtype{\csname #1\romannumeral\themultienumdepth\endcsname}\fi%
+	\vspace*{#2mm}\setlength{\ItemBottom}{#5mm}\begin{list}{}{
+			\setlength{\leftmargin}{2mm}
+			\addtolength{\leftmargin}{#3mm}
+			\setlength{\itemsep}{-2mm}
+			\addtolength{\itemsep}{#4mm}
+			\setlength{\labelwidth}{16pt}\setlength{\labelsep}{2pt}
+			\setlength{\usedx}{\labelwidth}%
+			\addtolength{\usedx}{\labelsep}%
+			\addtolength{\usedx}{\leftmargin}%
+			\setlength{\remainx}{\hsize}%
+			\addtolength{\remainx}{-\usedx}%
+			\setlength{\usedxx}{2\labelwidth}%
+			\addtolength{\usedxx}{2\labelsep}%
+			\addtolength{\usedxx}{\leftmargin}%
+			\setlength{\remainxx}{\hsize}%
+			\addtolength{\remainxx}{-\usedxx}%
+			\setlength{\usedxxx}{3\labelwidth}%
+			\addtolength{\usedxxx}{3\labelsep}%
+			\addtolength{\usedxxx}{\leftmargin}%
+			\setlength{\remainxxx}{\hsize}%
+			\addtolength{\remainxxx}{-\usedxxx}%
+			\setlength{\usedxxxx}{4\labelwidth}%
+			\addtolength{\usedxxxx}{4\labelsep}%
+			\addtolength{\usedxxxx}{\leftmargin}%
+			\setlength{\remainxxxx}{\hsize}%
+			\addtolength{\remainxxxx}{-\usedxxxx}%
+			\setlength{\remainxox}{.666\remainxxx}%
+			\addtolength{\remainxox}{\labelwidth}%
+			\addtolength{\remainxox}{\labelsep}%
+			\setlength{\remainxoxx}{.5\remainxxxx}%
+			\addtolength{\remainxoxx}{\labelwidth}%
+			\addtolength{\remainxoxx}{\labelsep}%
+			\setlength{\usedxxxxx}{5\labelwidth}%
+			\addtolength{\usedxxxxx}{5\labelsep}%
+			\addtolength{\usedxxxxx}{\leftmargin}%
+			\setlength{\remainxxxxx}{\hsize}%
+			\addtolength{\remainxxxxx}{-\usedxxxxx}%
+			\setlength{\itemindent}{0pt}}}
+	{\addtocounter{multienumdepth}{-1}\end{list}\vspace*{-2mm}\vspace{\ItemBottom}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%تعریف محیطی برای احجام هندسی تشکیل شده از مکعب های واحد
+\newcommand{\figcolor}{red!25}
+%\newcounter{x}\newcounter{y}\newcounter{z}
+%\newcommand\xaxis{210}\newcommand\yaxis{-30}\newcommand\zaxis{90}
+%\newcommand\topside[3]{\fill[fill=yellow, draw=black,shift={(\xaxis:#1)},shift={(\yaxis:#2)},
+%  shift={(\zaxis:#3)}] (0,0) -- (30:1) -- (0,1) --(150:1)--(0,0);}
+%\newcommand\leftside[3]{\fill[fill=red, draw=black,shift={(\xaxis:#1)},shift={(\yaxis:#2)},
+%  shift={(\zaxis:#3)}] (0,0) -- (0,-1) -- (210:1) --(150:1)--(0,0);}
+%\newcommand\rightside[3]{\fill[fill=blue, draw=black,shift={(\xaxis:#1)},shift={(\yaxis:#2)},
+%  shift={(\zaxis:#3)}] (0,0) -- (30:1) -- (-30:1) --(0,-1)--(0,0);}
+%\newcommand\cube[3]{\topside{#1}{#2}{#3} \leftside{#1}{#2}{#3} \rightside{#1}{#2}{#3}}
+%\newcommand\planepartition[1]{
+% \setcounter{x}{-1}\foreach \a in {#1} {\addtocounter{x}{1}
+%    \setcounter{y}{-1}\foreach \b in \a {\addtocounter{y}{1}
+%      \setcounter{z}{-1}\foreach \c in {1,...,\b} {\addtocounter{z}{1}
+%        \cube{\value{x}}{\value{y}}{\value{z}}}}}}
+
+\newcounter{x}\newcounter{y}\newcounter{z}
+\newcommand\xaxis{-130}\newcommand\yaxis{0}\newcommand\zaxis{90}
+\newcommand\topside[3]{\draw[fill=white,draw=black,shift={(\xaxis:{.5*#1})},shift={(\yaxis:#2)},
+  shift={(\zaxis:#3)}] (0,0) -- (50:.5) -- +(-1,0) --(-1,0)--(0,0);}
+\newcommand\leftside[3]{\draw[fill=\figcolor, draw=black,shift={(\xaxis:{.5*#1})},shift={(\yaxis:#2)},
+  shift={(\zaxis:#3)}] (0,0) -- (50:.5) -- +(0,-1) --(0,-1)--(0,0);}
+\newcommand\rightside[3]{\draw[fill=white, draw=black,shift={(\xaxis:{.5*#1})},shift={(\yaxis:#2)},
+  shift={(\zaxis:#3)}] (0,0) -- (-1,0) -- (-1,-1) --(0,-1)--(0,0);}
+\newcommand\cube[3]{\topside{#1}{#2}{#3} \leftside{#1}{#2}{#3} \rightside{#1}{#2}{#3}}
+\newcommand\planepartition[1]{
+ \setcounter{x}{-1}\foreach \a in {#1} {\addtocounter{x}{1}
+    \setcounter{y}{-1}\foreach \b in \a {\addtocounter{y}{1}
+      \setcounter{z}{-1}\foreach \c in {1,...,\b} {\addtocounter{z}{1}
+        \cube{\value{x}}{\value{y}}{\value{z}}}}}}
