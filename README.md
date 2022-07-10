@@ -1,9 +1,9 @@
-# Exam-Sample
+# Exam-Samples
 ---
 ## University exam templates
  * [unistyle](https://github.com/javadr/unistyle)
  * [aut-assignment-example](https://github.com/XePersian/aut-assignment-example)
----
+
 ## High school exam templates
 
  * AzadNejad
